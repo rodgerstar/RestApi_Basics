@@ -2,11 +2,14 @@ const express = require('express')
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Found Life Out Here');
+    res.send('Found Life Out Here!');
 });
 
 app.get('/api/courses', (req, res) => {
     res.send([1, 2, 3]);
 });
 
-app.listen(3000, () => console.log('Port 3000 Is Up And Running Rasta..'))
+//PORT
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => console.log(`Port ${port} Is Up And Running Rasta..`))
