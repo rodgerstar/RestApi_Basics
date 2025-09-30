@@ -13,6 +13,21 @@ app.get('/api/courses/:id', (req, res) => {
     res.send(req.params.id);
 });
 
+
+// // Routes Params
+// app.get('/api/post/:year/:month', (req, res) => {
+//     res.send(req.params);
+// });
+
+// Query Parameters
+app.get('/api/post/:year/:month', (req, res) => {
+    res.send(req.query);
+});
+
+
+//NB: Path/Routes Parameters: Use when the parameter is essential to identify the resource. 
+// Query Parameters: Use when the parameter is optional or for filtering, sorting, or pagination.
+
 //PORT
 const port = process.env.PORT || 3000;
 
