@@ -11,6 +11,14 @@ const courses = [
     { id: 3, name: 'courses3' },
 ]
 
+function validateCourse(course) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+
+    return schema.validate(course);
+}
+
 app.get('/', (req, res) => {
     res.send('Found Life Out Here!');
 });
@@ -21,17 +29,16 @@ app.get('/api/courses', (req, res) => {
 
 app.get('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) res.status(404).send('Course Not Found.');
+    if (!course) return res.status(404).send('Course Not Found.');
     res.send(course);
 });
 
 app.post('/api/courses', (req, res) => {
 
     const { error } = validateCourse(req.body);
-    if (error) {
-        res.status(400).send(error.details[0].message);
-        return;
-    }
+    if (error) return res.status(400).send(error.details[0].message);
+        
+    
 
     // if (!req.body.name || req.body.name <3) {
     //     res.status(404).send('Name should have a minminum of 5')
@@ -48,25 +55,29 @@ app.post('/api/courses', (req, res) => {
 
 app.put('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) res.status(404).send('Course Not Found.');
+    if (!course)  return res.status(404).send('Course Not With Id Not Found.');
 
     const { error } = validateCourse(req.body);
-    if (error) {
-        res.status(400).send(error.details[0].message);
-        return;
-    }
+    if (error) return res.status(400).send(error.details[0].message);
 
     course.name = req.body.name;
     res.send(course);
 });
 
-function validateCourse(course) {
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
-    });
 
-    return schema.validate(course);
-}
+
+
+app.delete('/api/courses/:id', (req, res) => {
+//look course
+const course = courses.find(c => c.id === parseInt(req.params.id));
+// not exist return 404
+if (!course) return res.status(404).send('Course Not With Id Not Found.');
+// delete
+const index = courses.indexOf(course);
+courses.splice(index, 1);
+//return course
+res.send(course);
+});
 
 
 
